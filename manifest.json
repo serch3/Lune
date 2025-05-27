@@ -1,0 +1,13 @@
+{
+    "manifest_version": 3,
+    "name": "Lune",
+    "version": "1.0",
+    "description": "Minimalistic start page, no ads, no tracking, no news.",
+    "chrome_url_overrides": {
+        "newtab": "index.html"
+    },
+    "permissions": ["storage", "topSites"],
+    "action": {
+        "default_popup": "index.html"
+    }
+}
