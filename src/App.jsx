@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Clock from './components/Clock';
 import DateDisplay from './components/Date';
 import Greeting from './components/Greeting';
@@ -11,6 +11,13 @@ import WeatherWidget from './components/WeatherWidget';
 
 const App = () => {
   const store = useSettingsStore();
+
+  // Update document title when tab-title changes
+  useEffect(() => {
+    if (store.tabTitle) {
+      document.title = store.tabTitle;
+    }
+  }, [store.tabTitle]);
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen text-white antialiased overflow-hidden">

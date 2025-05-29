@@ -20,6 +20,7 @@ export const useSettingsStore = create(
       searchEngine: 'google',
       clockFormat: '24h',
       showWeather: false,
+      tabTitle: 'New Tab',
 
       // actions
       setImage: (url) => set({ image: url }),
@@ -35,6 +36,7 @@ export const useSettingsStore = create(
       setShowWeather: (show) => set({ showWeather: show }),
       setSearchEngine: (engine) => set({ searchEngine: engine }),
       setClockFormat: (format) => set({ clockFormat: format }),
+      setTabTitle: (title) => set({ tabTitle: title }),
       clearAllData: () =>
         set({
           image: '',
@@ -48,6 +50,7 @@ export const useSettingsStore = create(
           searchEngine: 'google',
           clockFormat: '24h',
           showWeather: true,
+          tabTitle: 'New Tab',
         }),
     }),
     {
@@ -64,6 +67,7 @@ export const useSettingsStore = create(
         imageOpacity: state.imageOpacity,
         searchEngine: state.searchEngine,
         clockFormat: state.clockFormat,
+        tabTitle: state.tabTitle,
       }),
     }
   )

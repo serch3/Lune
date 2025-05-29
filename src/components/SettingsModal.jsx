@@ -55,12 +55,13 @@ export default function SettingsModal() {
   const [showWeather, setShowWeather] = useState(store.showWeather);
   const [backgroundImage, setBackgroundImage] = useState(store.backgroundImage);
   const [localBackgroundImage, setLocalBackgroundImage] = useState(store.localBackgroundImage);
-  const [imageOpacity, setImageOpacity] = useState(store.getImageOpacity);
+  const [imageOpacity, setImageOpacity] = useState(store.imageOpacity); // Correctly initialize with store.imageOpacity
   const [weatherToken, setWeatherToken] = useState(weatherStore.token);
   const [weatherLat, setWeatherLat] = useState(weatherStore.lat);
   const [weatherLon, setWeatherLon] = useState(weatherStore.lon);
   const [searchEngine, setSearchEngine] = useState(store.searchEngine);
   const [clockFormat, setClockFormat] = useState(store.clockFormat);
+  const [tabTitle, setTabTitle] = useState(store.tabTitle);
 
   const save = () => {
     store.setUsername(username);
@@ -76,6 +77,7 @@ export default function SettingsModal() {
     weatherStore.setLon(weatherLon);
     store.setSearchEngine(searchEngine);
     store.setClockFormat(clockFormat);
+    store.setTabTitle(tabTitle); // Save tab title
     closeModal();
   };
 
@@ -87,12 +89,13 @@ export default function SettingsModal() {
     setShowWeather(store.showWeather);
     setBackgroundImage(store.backgroundImage);
     setLocalBackgroundImage(store.localBackgroundImage);
-    setImageOpacity(store.getImageOpacity);
+    setImageOpacity(store.imageOpacity); // Correctly load from store.imageOpacity
     setWeatherToken(weatherStore.token);
     setWeatherLat(weatherStore.lat);
     setWeatherLon(weatherStore.lon);
     setSearchEngine(store.searchEngine);
     setClockFormat(store.clockFormat);
+    setTabTitle(store.tabTitle); // Load tab title on modal open
     store.setEdit(false);
     openModal();
   };
@@ -183,6 +186,16 @@ export default function SettingsModal() {
               <section>
                 <h2 className="text-base font-medium text-gray-300 mb-3 uppercase tracking-wider">General</h2>
                 <div className="bg-gray-800/50 rounded-xl divide-y divide-neutral-700/30">
+                  <div className="px-5">
+                    <SettingInput
+                      label="Tab Title"
+                      id="tabTitle"
+                      value={tabTitle}
+                      onChange={(e) => setTabTitle(e.target.value)}
+                      placeholder="New Tab"
+                      helpText="Set a custom title for your new tab page."
+                    />
+                  </div>
                   <div className="px-5">
                     <div className="form-control w-full py-3">
                       <legend className="fieldset-legend" htmlFor="searchEngineSelect">
