@@ -144,11 +144,51 @@ export default function SettingsModal() {
             <div className="p-5 sm:p-7 space-y-6 overflow-y-auto flex-grow">
               <section>
                 <h2 className="text-base font-medium text-gray-300 mb-3 uppercase tracking-wider">Appearance</h2>
-                <div className="form-control w-full py-2"><legend className="fieldset-legend" htmlFor="backgroundUrl"><span className="label-text text-gray-300 text-sm">Custom Background Image URL</span></legend><div className="join w-full"><input id="backgroundUrl" value={backgroundImage} onChange={e => setBackgroundImage(e.target.value)} type="text" placeholder="https://example.com/background.jpg" className="input input-bordered p-3 join-item flex-grow"/><button onClick={() => setBackgroundImage('')} className="btn btn-neutral join-item">Reset to default</button></div></div>
+
+                <div className="form-control w-full py-2">
+                  <legend className="fieldset-legend" htmlFor="backgroundUrl">
+                    <span className="label-text text-gray-300 text-sm">Custom Background Image URL</span>
+                  </legend>
+                  <div className="relative">
+                    <input
+                      id="backgroundUrl"
+                      value={backgroundImage}
+                      onChange={e => setBackgroundImage(e.target.value)}
+                      type="text"
+                      placeholder="Enter image URL (e.g., https://example.com/image.jpg)"
+                      className="input input-bordered w-full p-3 pr-28 rounded-md"
+                    />
+                    {backgroundImage && (
+                      <button
+                        onClick={() => setBackgroundImage('')}
+                        className="btn btn-sm btn-ghost absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                        aria-label="Clear image URL"
+                      >
+                        Clear
+                      </button>
+                    )}
+                  </div>
+                  {backgroundImage && (
+                    <div className="mt-3 p-2 border border-neutral-700/50 rounded-lg bg-gray-800/30">
+                      <img src={backgroundImage} alt="Background Preview" className="max-h-32 w-full object-contain rounded" />
+                    </div>
+                  )}
+                </div>
+
                 <div className="form-control w-full py-2">
                   <legend className="fieldset-legend" htmlFor="localBackgroundFile">
                     <span className="label-text text-gray-300 text-sm">Local Background Image</span>
                   </legend>
+                  <label
+                    htmlFor="localBackgroundFile"
+                    className="btn btn-outline rounded-md border-dashed border-neutral-600 hover:bg-neutral-700/50 hover:border-neutral-500 text-gray-300 font-normal p-4 w-full flex flex-col items-center justify-center cursor-pointer h-32"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mb-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span>Click to upload or drag & drop</span>
+                    <span className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 10MB</span>
+                  </label>
                   <input
                     type="file"
                     id="localBackgroundFile"
@@ -163,15 +203,25 @@ export default function SettingsModal() {
                         reader.readAsDataURL(file);
                       }
                     }}
-                    className="file-input file-input-bordered w-full"
+                    className="hidden"
                   />
                   {localBackgroundImage && (
-                    <button
-                      onClick={() => setLocalBackgroundImage('')}
-                      className="btn btn-neutral mt-2"
-                    >
-                      Remove Local Image
-                    </button>
+                    <div className="mt-3 p-2 border border-neutral-700/50 rounded-lg bg-gray-800/30 relative">
+                      <img src={localBackgroundImage} alt="Local Background Preview" className="max-h-32 w-full object-contain rounded" />
+                      <button
+                        onClick={() => {
+                          setLocalBackgroundImage('');
+                          const fileInput = document.getElementById('localBackgroundFile');
+                          if (fileInput) fileInput.value = '';
+                        }}
+                        className="btn btn-sm btn-circle btn-ghost absolute top-2 right-2 bg-gray-700/50 hover:bg-gray-600/70"
+                        aria-label="Remove local image"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
                   )}
                 </div>
                 <div className="form-control w-full py-1 mt-4">
