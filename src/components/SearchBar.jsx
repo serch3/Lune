@@ -10,6 +10,14 @@ const SUGGEST_ENDPOINTS = {
   yandex: q => `https://yandex.com/suggest/suggest-ya.cgi?v=4&part=${encodeURIComponent(q)}`,
 };
 
+// Search engine icon mapping
+const SEARCH_ENGINE_ICONS = {
+  google: '/brands/google.svg',
+  duckduckgo: '/brands/duckduckgo.svg',
+  bing: '/brands/bing.svg',
+  yandex: '/brands/yandex.svg',
+};
+
 // Debounce hook
 function useDebounce(value, delay) {
   const [debounced, setDebounced] = useState(value);
@@ -109,10 +117,17 @@ const SearchBar = () => {
           onFocus={() => debouncedTerm && suggestions.length > 0 && setShowDropdown(true)}
           onKeyDown={handleKeyDown}
           placeholder="Search or type a URL"
-          className="w-full pl-12 pr-4 py-3 text-lg bg-white border rounded-full dark:bg-gray-800 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-shadow duration-200 shadow-sm hover:shadow-md focus:shadow-lg placeholder-gray-400 dark:placeholder-gray-500"
+          className="w-full pl-12 pr-12 py-3 text-lg bg-white border rounded-full dark:bg-gray-800 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-shadow duration-200 shadow-sm hover:shadow-md focus:shadow-lg placeholder-gray-400 dark:placeholder-gray-500"
           aria-autocomplete="list"
           aria-controls="suggestion-list"
         />
+        {searchEngine && SEARCH_ENGINE_ICONS[searchEngine] && (
+          <img
+            src={SEARCH_ENGINE_ICONS[searchEngine]}
+            alt={`${searchEngine} logo`}
+            className="absolute right-4 h-6 w-6"
+          />
+        )}
       </div>
       {showDropdown && suggestions.length > 0 && (
         <ul
