@@ -55,7 +55,7 @@ export default function SettingsModal() {
   const [showWeather, setShowWeather] = useState(store.showWeather);
   const [backgroundImage, setBackgroundImage] = useState(store.backgroundImage);
   const [localBackgroundImage, setLocalBackgroundImage] = useState(store.localBackgroundImage);
-  const [imageOpacity, setImageOpacity] = useState(store.imageOpacity); // Correctly initialize with store.imageOpacity
+  const [imageOpacity, setImageOpacity] = useState(store.imageOpacity);
   const [weatherToken, setWeatherToken] = useState(weatherStore.token);
   const [weatherLat, setWeatherLat] = useState(weatherStore.lat);
   const [weatherLon, setWeatherLon] = useState(weatherStore.lon);
@@ -77,7 +77,7 @@ export default function SettingsModal() {
     weatherStore.setLon(weatherLon);
     store.setSearchEngine(searchEngine);
     store.setClockFormat(clockFormat);
-    store.setTabTitle(tabTitle); // Save tab title
+    store.setTabTitle(tabTitle);
     closeModal();
   };
 
@@ -89,13 +89,13 @@ export default function SettingsModal() {
     setShowWeather(store.showWeather);
     setBackgroundImage(store.backgroundImage);
     setLocalBackgroundImage(store.localBackgroundImage);
-    setImageOpacity(store.imageOpacity); // Correctly load from store.imageOpacity
+    setImageOpacity(store.imageOpacity);
     setWeatherToken(weatherStore.token);
     setWeatherLat(weatherStore.lat);
     setWeatherLon(weatherStore.lon);
     setSearchEngine(store.searchEngine);
     setClockFormat(store.clockFormat);
-    setTabTitle(store.tabTitle); // Load tab title on modal open
+    setTabTitle(store.tabTitle);
     store.setEdit(false);
     openModal();
   };
@@ -210,7 +210,7 @@ export default function SettingsModal() {
                         <option value="google">Google</option>
                         <option value="duckduckgo">DuckDuckGo</option>
                         <option value="bing">Bing</option>
-                        {/* Add more search engines here if needed */}
+                        <option value="yandex">Yandex</option>
                       </select>
                     </div>
                   </div>

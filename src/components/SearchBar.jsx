@@ -7,6 +7,7 @@ const SUGGEST_ENDPOINTS = {
   google: q => `https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(q)}`,
   duckduckgo: q => `https://ac.duckduckgo.com/ac/?q=${encodeURIComponent(q)}&type=list`,
   bing: q => `https://api.bing.com/osjson.aspx?query=${encodeURIComponent(q)}`,
+  yandex: q => `https://yandex.com/suggest/suggest-ya.cgi?v=4&part=${encodeURIComponent(q)}`,
 };
 
 // Debounce hook
@@ -41,6 +42,10 @@ const SearchBar = () => {
       let items = [];
       if (searchEngine === 'duckduckgo') {
         items = data.map(item => item.phrase);
+      } else if (searchEngine === 'yandex') {
+        if (Array.isArray(data) && data.length > 1 && Array.isArray(data[1])) {
+          items = data[1].map(item => typeof item === 'string' ? item : item[1]);
+        }
       } else if (Array.isArray(data[1])) {
         items = data[1];
       }
@@ -78,6 +83,7 @@ const SearchBar = () => {
       google: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
       duckduckgo: `https://duckduckgo.com/?q=${encodeURIComponent(query)}`,
       bing: `https://www.bing.com/search?q=${encodeURIComponent(query)}`,
+      yandex: `https://yandex.com/search/?text=${encodeURIComponent(query)}`,
     };
     window.location.href = urls[searchEngine] || urls.google;
     setSearchTerm('');
