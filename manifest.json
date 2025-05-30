@@ -7,6 +7,12 @@
         "newtab": "index.html"
     },
     "permissions": ["storage", "topSites"],
+    "host_permissions": [
+        "https://suggestqueries.google.com/",
+        "https://ac.duckduckgo.com/",
+        "https://api.bing.com/",
+        "https://yandex.com/"
+    ],
     "action": {
         "default_popup": "index.html"
     }

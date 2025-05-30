@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { useSettingsStore } from '@/stores/settings';
+import { MAX_SUGGESTIONS } from '@/constants';
 
 // Suggestion endpoint mappings
 const SUGGEST_ENDPOINTS = {
@@ -57,7 +58,7 @@ const SearchBar = () => {
       } else if (Array.isArray(data[1])) {
         items = data[1];
       }
-      setSuggestions(items);
+      setSuggestions(items.slice(0, MAX_SUGGESTIONS));
       setShowDropdown(items.length > 0);
     } catch (err) {
       if (err.name !== 'AbortError') console.error(err);
@@ -133,17 +134,17 @@ const SearchBar = () => {
         <ul
           id="suggestion-list"
           role="listbox"
-          className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-b-lg dark:bg-gray-800 dark:border-gray-700 overflow-hidden shadow-lg"
+          className="absolute z-50 w-full mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl overflow-hidden"
         >
           {suggestions.map((sugg, idx) => (
             <li
               key={idx}
               role="option"
               onMouseDown={() => goToSearch(sugg)}
-              className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150"
+              className="flex items-center px-4 py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150"
             >
               <FiSearch className="mr-3 text-gray-500 dark:text-gray-400" />
-              <span className="truncate text-gray-900 dark:text-gray-100">{sugg}</span>
+              <span className="truncate text-gray-900 dark:text-gray-100 text-base">{sugg}</span>
             </li>
           ))}
         </ul>
