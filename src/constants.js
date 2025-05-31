@@ -1,7 +1,10 @@
 export const GROUPS = [
-  'Productivity', 'School', 'Work', 'Home', 'Entertainment',
-  'Server', 'Training', 'Other'
+  'Productivity', 'Social Media', 'Entertainment', 'Shopping',
+  'Development', 'Education', 'Finance', 'Health', 'Travel', 'Sports', 
+  'Other'
 ];
+
+export const MAX_SUGGESTIONS = 7;
 
 export const COLORS = [
   { name: 'Red',        color: 'rgba(220, 38, 38, 0.7)' },
@@ -16,4 +19,7 @@ export const COLORS = [
   { name: 'Lime',       color: 'rgba(49, 216, 67, 0.7)' },
   { name: 'Brown',      color: 'rgba(175, 122, 109, 0.7)' },
   { name: 'Blue Gray',  color: 'rgba(79, 109, 122, 0.7)' },
+  { name: 'Cyan',       color: 'rgba(14, 165, 233, 0.7)' },
+  { name: 'Teal',       color: 'rgba(20, 184, 166, 0.7)' },
+  { name: 'Yellow',     color: 'rgba(234, 179, 8, 0.7)' },
 ];

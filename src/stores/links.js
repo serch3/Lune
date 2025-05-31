@@ -2,10 +2,11 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 const defaultLinks = [
-  { id: Date.now() + 1, name: 'Nuxt',     url: 'https://nuxtjs.org',      group: 'Programming', color: '#059669' },
-  { id: Date.now() + 2, name: 'daisyUI',  url: 'https://daisyui.com/',    group: 'Programming'               },
-  { id: Date.now() + 3, name: 'YouTube',  url: 'https://youtube.com',      group: 'Entertainment', color: '#FF0000' },
-  { id: Date.now() + 4, name: 'Reddit',   url: 'https://reddit.com',       group: 'Entertainment', color: '#FF4500' },
+  { id: crypto.randomUUID(), name: 'Nuxt',     url: 'https://nuxtjs.org',       group: 'Development', color: 'rgba(5, 150, 105, 0.7)' },
+  { id: crypto.randomUUID(), name: 'daisyUI',  url: 'https://daisyui.com/',     group: 'Development'  , color: 'rgb(246, 169, 59, 0.7)' },
+  { id: crypto.randomUUID(), name: 'YouTube',  url: 'https://youtube.com',      group: 'Social media', color: 'rgba(255, 0, 0, 0.7)' },
+  { id: crypto.randomUUID(), name: 'Steam',    url: 'https://store.steampowered.com', group: 'Gaming', color: 'rgba(0, 0, 0, 0.7)' },
+  { id: crypto.randomUUID(), name: 'X',        url: 'https://twitter.com',      group: 'Social Media', color: 'rgb(16, 16, 16, 0.7)' },
 ]
 
 export const useLinksStore = create(
@@ -18,9 +19,22 @@ export const useLinksStore = create(
       // actions
       addLink: (link) =>
         set((state) => ({
-          links: [...state.links, { ...link, id: Date.now() }],
+          links: [...state.links, { ...link, id: crypto.randomUUID() }],
           linkChanged: state.linkChanged + 1,
         })),
+
+      addMultipleLinks: (newLinks) =>
+        set((state) => {
+          const existingUrls = new Set(state.links.map(link => link.url));
+          const filteredNewLinks = newLinks.filter(link => !existingUrls.has(link.url));
+          if (filteredNewLinks.length === 0) {
+            return state;
+          }
+          return {
+            links: [...state.links, ...filteredNewLinks],
+            linkChanged: state.linkChanged + filteredNewLinks.length,
+          };
+        }),
 
       deleteLink: (id) =>
         set((state) => ({
@@ -37,34 +51,12 @@ export const useLinksStore = create(
           return { links: updated, linkChanged: state.linkChanged + 1 }
         }),
 
-      fetchAndAddTopSites: () => {
-        if (chrome && chrome.topSites && chrome.topSites.get) {
-          chrome.topSites.get((sites) => {
-            const topEightSites = sites.slice(0, 8);
-            const favoriteLinks = topEightSites.map((site, index) => ({
-              id: Date.now() + 1000 + index,
-              name: site.title,
-              url: site.url,
-              group: 'Favorites',
-              color: '#6b7280', // Default color for favorites
-            }));
-            set((state) => ({
-              links: [...state.links, ...favoriteLinks],
-              linkChanged: state.linkChanged + 1,
-            }));
-          });
-        } else {
-          console.warn('chrome.topSites API is not available.');
-        }
-      },
-
       clearAllData: () =>
         set({
           links: defaultLinks.slice(),
           linkChanged: 0,
         }),
 
-      // getters (as functions on the store)
       getLinks: () => get().links,
       getUniqueGroups: () => [...new Set(get().links.map((l) => l.group))],
     }),
