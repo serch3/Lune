@@ -62,6 +62,9 @@ export default function SettingsModal() {
   const [searchEngine, setSearchEngine] = useState(store.searchEngine);
   const [clockFormat, setClockFormat] = useState(store.clockFormat);
   const [tabTitle, setTabTitle] = useState(store.tabTitle);
+  const [unsplashApiKey, setUnsplashApiKey] = useState(store.unsplashApiKey);
+  const [unsplashCollectionId, setUnsplashCollectionId] = useState(store.unsplashCollectionId);
+  const [unsplashFrequency, setUnsplashFrequency] = useState(store.unsplashFrequency);
 
   const save = () => {
     store.setUsername(username);
@@ -78,6 +81,9 @@ export default function SettingsModal() {
     store.setSearchEngine(searchEngine);
     store.setClockFormat(clockFormat);
     store.setTabTitle(tabTitle);
+    store.setUnsplashApiKey(unsplashApiKey);
+    store.setUnsplashCollectionId(unsplashCollectionId);
+    store.setUnsplashFrequency(unsplashFrequency);
     closeModal();
   };
 
@@ -96,6 +102,9 @@ export default function SettingsModal() {
     setSearchEngine(store.searchEngine);
     setClockFormat(store.clockFormat);
     setTabTitle(store.tabTitle);
+    setUnsplashApiKey(store.unsplashApiKey);
+    setUnsplashCollectionId(store.unsplashCollectionId);
+    setUnsplashFrequency(store.unsplashFrequency);
     store.setEdit(false);
     openModal();
   };
@@ -264,22 +273,6 @@ export default function SettingsModal() {
                       </select>
                     </div>
                   </div>
-                  <div className="px-5">
-                    <SettingToggle
-                      label="Show Weather"
-                      id="showWeather"
-                      checked={showWeather}
-                      onChange={(e) => setShowWeather(e.target.checked)}
-                    />
-                  </div>
-                  <div className="px-5">
-                    <SettingToggle
-                      label="Show Clock"
-                      id="showClock"
-                      checked={showClock}
-                      onChange={e => setShowClock(e.target.checked)}
-                    />
-                  </div>
                 </div>
               </section>
 
@@ -312,10 +305,49 @@ export default function SettingsModal() {
               <section>
                 <h2 className="text-base font-medium text-gray-300 mb-3 uppercase tracking-wider">Weather Widget</h2>
                 <div className="bg-gray-800/50 rounded-xl p-5 space-y-4">
+                  <SettingToggle label="Show Weather" id="showWeather" checked={showWeather} onChange={(e) => setShowWeather(e.target.checked)} />
                   <SettingInput label="OpenWeather API Token" id="weatherToken" value={weatherToken} onChange={e => setWeatherToken(e.target.value)} placeholder="Your API token"/>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <SettingInput label="Latitude" id="weatherLat" type="number" value={weatherLat} onChange={e => setWeatherLat(Number(e.target.value))} placeholder="e.g., 50.23"/>
                     <SettingInput label="Longitude" id="weatherLon" type="number" value={weatherLon} onChange={e => setWeatherLon(Number(e.target.value))} placeholder="e.g., 16.17"/>
+                  </div>
+                </div>
+              </section>
+
+              <section>
+                <h2 className="text-base font-medium text-gray-300 mb-3 uppercase tracking-wider">Unsplash Background</h2>
+                <div className="bg-gray-800/50 rounded-xl p-5 space-y-4">
+                  <SettingInput
+                    label="Unsplash API Key"
+                    id="unsplashApiKey"
+                    value={unsplashApiKey}
+                    onChange={(e) => setUnsplashApiKey(e.target.value)}
+                    placeholder="Enter your Unsplash API Key"
+                    helpText="Get an API key from Unsplash Developers."
+                  />
+                  <SettingInput
+                    label="Unsplash Collection ID (Optional)"
+                    id="unsplashCollectionId"
+                    value={unsplashCollectionId}
+                    onChange={(e) => setUnsplashCollectionId(e.target.value)}
+                    placeholder="Enter a collection ID"
+                    helpText="Leave blank for random photos from Unsplash."
+                  />
+                  <div className="form-control w-full py-3">
+                    <legend className="fieldset-legend" htmlFor="unsplashFrequencySelect">
+                      <span className="label-text text-gray-300 text-sm">Update Frequency</span>
+                    </legend>
+                    <select
+                      id="unsplashFrequencySelect"
+                      className="select select-bordered w-full"
+                      value={unsplashFrequency}
+                      onChange={(e) => setUnsplashFrequency(e.target.value)}
+                    >
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="hourly">Hourly</option>
+                      <option value="manual">Manual (on page load)</option>
+                    </select>
                   </div>
                 </div>
               </section>

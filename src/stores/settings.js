@@ -21,6 +21,9 @@ export const useSettingsStore = create(
       clockFormat: '24h',
       showWeather: false,
       tabTitle: 'New Tab',
+      unsplashApiKey: '',
+      unsplashCollectionId: '',
+      unsplashFrequency: 'daily', // ('daily', 'weekly', 'hourly')
 
       // actions
       setImage: (url) => set({ image: url }),
@@ -37,6 +40,9 @@ export const useSettingsStore = create(
       setSearchEngine: (engine) => set({ searchEngine: engine }),
       setClockFormat: (format) => set({ clockFormat: format }),
       setTabTitle: (title) => set({ tabTitle: title }),
+      setUnsplashApiKey: (key) => set({ unsplashApiKey: key }),
+      setUnsplashCollectionId: (id) => set({ unsplashCollectionId: id }),
+      setUnsplashFrequency: (freq) => set({ unsplashFrequency: freq }),
       clearAllData: () =>
         set({
           image: '',
@@ -51,6 +57,9 @@ export const useSettingsStore = create(
           clockFormat: '24h',
           showWeather: true,
           tabTitle: 'New Tab',
+          unsplashApiKey: '',
+          unsplashCollectionId: '',
+          unsplashFrequency: 'daily',
         }),
     }),
     {
@@ -68,6 +77,9 @@ export const useSettingsStore = create(
         searchEngine: state.searchEngine,
         clockFormat: state.clockFormat,
         tabTitle: state.tabTitle,
+        unsplashApiKey: state.unsplashApiKey,
+        unsplashCollectionId: state.unsplashCollectionId,
+        unsplashFrequency: state.unsplashFrequency,
       }),
     }
   )

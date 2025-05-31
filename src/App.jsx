@@ -3,7 +3,7 @@ import Clock from './components/Clock';
 import DateDisplay from './components/Date';
 import Greeting from './components/Greeting';
 import SearchBar from './components/SearchBar';
-import BackgroundImage from './components/Image';
+import BackgroundImage from './components/Background';
 import { useSettingsStore } from './stores/settings';
 import { useLinksStore } from './stores/links';
 import SettingsModal from './components/SettingsModal';
