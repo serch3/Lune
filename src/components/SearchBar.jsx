@@ -6,7 +6,7 @@ import { MAX_SUGGESTIONS } from '@/constants';
 // Suggestion endpoint mappings
 const SUGGEST_ENDPOINTS = {
   google: q => `https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(q)}`,
-  duckduckgo: q => `https://ac.duckduckgo.com/ac/?q=${encodeURIComponent(q)}&type=list`,
+  duckduckgo: q => `https://api.duckduckgo.com/ac/?q=${encodeURIComponent(q)}&type=list`,
   bing: q => `https://api.bing.com/osjson.aspx?query=${encodeURIComponent(q)}`,
   yandex: q => `https://yandex.com/suggest/suggest-ya.cgi?v=4&part=${encodeURIComponent(q)}`,
 };

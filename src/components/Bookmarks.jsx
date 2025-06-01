@@ -16,10 +16,10 @@ const Bookmarks = () => {
     openEditModal();
   };
 
-  const getFaviconUrl = (url) => {
+  const getFaviconUrl = (url, size = 32) => {
     try {
       const urlObj = new URL(url);
-      return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=32`;
+      return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=${size}`;
     } catch (error) {
       console.error("Error creating favicon URL:", error);
       return 'vite.svg';
@@ -31,57 +31,107 @@ const Bookmarks = () => {
       {groups.map((group) => (
         <div key={group} className="mb-5">
           <h2 className="text-xl font-semibold mb-3 text-gray-200 capitalize">{group}</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+          <div
+            className={`grid ${
+              group === 'Favorites'
+                ? 'gap-2 grid-cols-4 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 xl:grid-cols-10'
+                : 'gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'
+            }`}
+          >
             {links
               .filter((link) => link.group === group)
               .map((link) => (
-                <div
-                  key={link.name}
-                  className="card card-compact bg-base-200 shadow-md hover:shadow-lg rounded-2xl group relative hover:scale-[1.015] transition-transform duration-200"
-                  style={link.color ? { backgroundColor: link.color, borderColor: link.color } : {}}
-                >
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="card-body items-center text-center p-2 pb-3 flex flex-col justify-start h-full relative z-10"
+                group === 'Favorites' ? (
+                  <div
+                    key={link.id}
+                    className="p-2 rounded-lg hover:bg-gray-700/40 transition-colors duration-150 flex flex-col items-center relative group"
+                    style={link.color ? { boxShadow: `0 0 0 1.5px ${link.color}99` } : {}}
                   >
-                    <div className="mb-1">
-                      <div className="w-9 h-9 rounded-full flex items-center justify-center bg-black bg-opacity-30 backdrop-blur">
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex flex-col items-center text-center w-full h-full justify-start"
+                    >
+                      <div className="mb-1.5 w-9 h-9 rounded-md flex items-center justify-center bg-black bg-opacity-10 backdrop-blur-sm">
                         <img
                           src={getFaviconUrl(link.url)}
                           alt={`${link.name} favicon`}
-                          className="w-6 h-6 object-contain"
+                          className="w-5 h-5 object-contain"
                           onError={(e) => { e.target.onerror = null; e.target.src = 'vite.svg'; }}
                         />
                       </div>
-                    </div>
-                    <h3 className="text-xs font-medium text-base-content break-words text-center leading-tight line-clamp-2" title={link.name}>
-                      {link.name}
-                    </h3>
-                  </a>
-
-                  {/* Compact Dropdown Actions */}
-                  <div className="absolute top-1.5 right-1.5 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="dropdown dropdown-end">
-                      <button tabIndex={0} className="btn btn-xs btn-circle btn-ghost text-white">
-                        <FiMoreHorizontal size={14} />
-                      </button>
-                      <ul tabIndex={0} className="dropdown-content menu shadow bg-base-100 rounded-box w-40 p-2 z-[1]">
-                        <li>
-                          <button onClick={() => handleEditClick(link)} className="flex items-center gap-2 text-sm">
-                            <FiEdit3 /> Edit
-                          </button>
-                        </li>
-                        <li>
-                          <button onClick={() => deleteLink(link.id)} className="flex items-center gap-2 text-sm text-red-500">
-                            <FiX /> Delete
-                          </button>
-                        </li>
-                      </ul>
+                      <h3 className="text-xs font-medium text-base-content break-words text-center leading-tight line-clamp-2" title={link.name}>
+                        {link.name}
+                      </h3>
+                    </a>
+                    <div className="absolute top-0.5 right-0.5 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="dropdown dropdown-end">
+                        <button tabIndex={0} className="btn btn-xs btn-circle btn-ghost text-gray-300 hover:text-white">
+                          <FiMoreHorizontal size={14} />
+                        </button>
+                        <ul tabIndex={0} className="dropdown-content menu shadow bg-base-100 rounded-box w-40 p-2 z-[1]">
+                          <li>
+                            <button onClick={() => handleEditClick(link)} className="flex items-center gap-2 text-sm">
+                              <FiEdit3 /> Edit
+                            </button>
+                          </li>
+                          <li>
+                            <button onClick={() => deleteLink(link.id)} className="flex items-center gap-2 text-sm text-red-500">
+                              <FiX /> Delete
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div
+                    key={link.id}
+                    className="card card-compact bg-base-200 shadow-md hover:shadow-lg rounded-2xl group relative hover:scale-[1.015] transition-transform duration-200"
+                    style={link.color ? { backgroundColor: link.color, borderColor: link.color } : {}}
+                  >
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="card-body items-center text-center p-1.5 pb-2 flex flex-col justify-start h-full relative z-10"
+                    >
+                      <div className="mb-1">
+                        <div className="w-9 h-9 rounded-full flex items-center justify-center bg-black bg-opacity-30 backdrop-blur">
+                          <img
+                            src={getFaviconUrl(link.url)}
+                            alt={`${link.name} favicon`}
+                            className="w-6 h-6 object-contain"
+                            onError={(e) => { e.target.onerror = null; e.target.src = 'vite.svg'; }}
+                          />
+                        </div>
+                      </div>
+                      <h3 className="text-xs font-medium text-base-content break-words text-center leading-tight line-clamp-2" title={link.name}>
+                        {link.name}
+                      </h3>
+                    </a>
+                    <div className="absolute top-1.5 right-1.5 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="dropdown dropdown-end">
+                        <button tabIndex={0} className="btn btn-xs btn-circle btn-ghost text-white">
+                          <FiMoreHorizontal size={14} />
+                        </button>
+                        <ul tabIndex={0} className="dropdown-content menu shadow bg-base-100 rounded-box w-40 p-2 z-[1]">
+                          <li>
+                            <button onClick={() => handleEditClick(link)} className="flex items-center gap-2 text-sm">
+                              <FiEdit3 /> Edit
+                            </button>
+                          </li>
+                          <li>
+                            <button onClick={() => deleteLink(link.id)} className="flex items-center gap-2 text-sm text-red-500">
+                              <FiX /> Delete
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )
               ))}
           </div>
         </div>

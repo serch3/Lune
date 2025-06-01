@@ -5,8 +5,8 @@ const defaultLinks = [
   { id: crypto.randomUUID(), name: 'Nuxt',     url: 'https://nuxtjs.org',       group: 'Development', color: 'rgba(5, 150, 105, 0.7)' },
   { id: crypto.randomUUID(), name: 'daisyUI',  url: 'https://daisyui.com/',     group: 'Development'  , color: 'rgb(246, 169, 59, 0.7)' },
   { id: crypto.randomUUID(), name: 'YouTube',  url: 'https://youtube.com',      group: 'Social media', color: 'rgba(255, 0, 0, 0.7)' },
-  { id: crypto.randomUUID(), name: 'Steam',    url: 'https://store.steampowered.com', group: 'Gaming', color: 'rgba(0, 0, 0, 0.7)' },
-  { id: crypto.randomUUID(), name: 'X',        url: 'https://twitter.com',      group: 'Social Media', color: 'rgb(16, 16, 16, 0.7)' },
+  { id: crypto.randomUUID(), name: 'X',        url: 'https://x.com',      group: 'Social media', color: 'rgb(16, 16, 16, 0.7)' },
+  { id: crypto.randomUUID(), name: 'Steam',    url: 'https://store.steampowered.com', group: 'Gaming', color: 'rgb(0, 44, 97, 0.7)' },
 ]
 
 export const useLinksStore = create(

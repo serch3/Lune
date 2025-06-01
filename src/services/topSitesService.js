@@ -1,4 +1,3 @@
-
 /**
  * Get the browser’s top sites as a promise.
  * @returns {Promise<chrome.topSites.MostVisitedURL[]>}
@@ -24,18 +23,24 @@ const getTopSites = () =>
  * @param {string[]} [opts.existingUrls] – URLs to skip
  * @param {number} [opts.limit=8]
  * @param {string} [opts.group='Favorites']
- * @param {string} [opts.color='#6b7280']
+ * @param {string} [opts.color='#000']
  */
 export async function fetchAndAddTopSites(
   addMultipleLinks,
   {
     existingUrls = [],
-    limit = 6,
+    limit = 8,
     group = 'Favorites',
-    color = '#6b7280',
+    color = '#000',
   } = {}
 ) {
   try {
+    const hasFetchedTopSites = localStorage.getItem('hasFetchedTopSites');
+    if (hasFetchedTopSites) {
+      console.info('Initial top sites fetch already performed.');
+      return;
+    }
+
     const sites = await getTopSites();
     if (sites.length === 0) {
       console.info('No top sites returned by chrome.topSites.');
@@ -66,6 +71,7 @@ export async function fetchAndAddTopSites(
     }));
 
     addMultipleLinks(linksToAdd);
+    localStorage.setItem('hasFetchedTopSites', 'true');
     console.info(`Added ${linksToAdd.length} top‐site link(s).`);
   } catch (err) {
     console.error('fetchAndAddTopSites failed:', err);

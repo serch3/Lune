@@ -27,7 +27,7 @@ const App = () => {
   useEffect(() => {
     if (!topSitesFetched) {
       fetchAndAddTopSites(addMultipleLinks, { existingUrls: links.map(link => link.url) });
-      setTopSitesFetched(true); // Set to true after fetching
+      setTopSitesFetched(true);
     }
   }, [addMultipleLinks, links, topSitesFetched]);
 

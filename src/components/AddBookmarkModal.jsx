@@ -44,6 +44,7 @@ export function AddBookmark() {
       group: group || 'Other',
       color
     });
+    
     // Clear form fields after adding a link
     setName('');
     setUrl('');
@@ -64,7 +65,7 @@ export function AddBookmark() {
       <button
         onClick={handleOpenModal}
         aria-label="Add new bookmark"
-        className="btn btn-circle btn-primary fixed bottom-8 left-8 z-[100] shadow-xl backdrop-blur-md hover:scale-105 active:scale-95 p-3 bg-blue-600/70 hover:bg-blue-500/90 border-none"
+        className="btn btn-circle fixed bottom-8 left-8 z-[100] shadow-xl hover:scale-105 active:scale-95"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" className="text-white">
             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
