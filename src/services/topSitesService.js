@@ -62,13 +62,18 @@ export async function fetchAndAddTopSites(
     }
 
     const baseTimestamp = Date.now();
-    const linksToAdd = uniqueNew.map((site, idx) => ({
-      id: crypto.randomUUID?.() ?? `${baseTimestamp}-${idx}`,
-      name: site.title || new URL(site.url).hostname,
-      url: site.url,
-      group,
-      color,
-    }));
+    const linksToAdd = uniqueNew.map((site, idx) => {
+      // remove "- ..." or "| ..." from the title if needed
+      // const cleanTitle = site.title ? site.title.replace(/^(.+?)(?=\s*(?:\||-)\s*|$)/, '$1').trim() : '';
+      return {
+        id: crypto.randomUUID?.() ?? `${baseTimestamp}-${idx}`,
+        name: site.title || new URL(site.url).hostname,
+        url: site.url,
+        group,
+        color,
+      };
+
+    });
 
     addMultipleLinks(linksToAdd);
     localStorage.setItem('hasFetchedTopSites', 'true');

@@ -161,7 +161,7 @@ const Bookmarks = () => {
                                   href={link.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="card-body items-center text-center p-1.5 pb-2 flex flex-col justify-start h-full relative z-10"
+                                  className="card-body items-center text-center p-1 pb-1.5 flex flex-col justify-start h-full relative z-10"
                                 >
                                   <div className="mb-1">
                                     <div className="w-9 h-9 rounded-full flex items-center justify-center bg-black bg-opacity-30 backdrop-blur">
