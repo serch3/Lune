@@ -1,6 +1,6 @@
 # 🌙 Lune - Aesthetic Startpage Extension
 
-A beautiful, minimal, and customizable startpage extension for Chromium browsers. Transform your new tab page into a modern, distraction-free workspace with no ads, no tracking, and no paid news.
+A beautiful, minimal, and customizable startpage extension for Chromium browsers. Transform your new tab page into a modern, distraction-free directory with no ads, no tracking, and no paid news.
 
 ![Extension Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
 ![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-green.svg)
@@ -16,7 +16,7 @@ A beautiful, minimal, and customizable startpage extension for Chromium browsers
 ### 🎨 **Customizable Interface**
 - **Custom Backgrounds**: Upload your own images or use Unsplash integration
 - **Adjustable Clock**: 12/24-hour format with elegant design
-- **Date Display**: Clean, minimal date presentation
+- **Date Display**: Clean date presentation
 
 ### 🔍 **Smart Search**
 - **Multi-Engine Support**: Google, DuckDuckGo, Bing, and Yandex
@@ -44,24 +44,6 @@ A beautiful, minimal, and customizable startpage extension for Chromium browsers
 4. Open your browser's extensions page (e.g., `chrome://extensions/` or `edge://extensions/`)
 5. Enable "Developer mode" (toggle in the top right corner)
 6. Click "Load unpacked" and select the `dist` folder
-## 🔧 Development
-
-### Prerequisites
-- Node.js 16+ 
-- npm or yarn
-
-### Setup
-```bash
-# Clone the repository
-git clone https://github.com/your-username/lune.git
-cd lune
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-```
 
 ## 🔒 Privacy
 - ✅ **No tracking or analytics**
