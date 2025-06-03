@@ -9,7 +9,7 @@ A beautiful, minimal, and customizable startpage extension for Chromium browsers
 
 
 <!-- image preview -->
-![Lune Preview](https://raw.githubusercontent.com/serch3/lune/public/preview.png)
+![Lune Preview](https://raw.githubusercontent.com/serch3/Lune/refs/heads/master/public/preview.png)
 
 ## ✨ Features
 
