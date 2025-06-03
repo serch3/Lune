@@ -51,7 +51,7 @@ const Bookmarks = () => {
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className={`mb-5 p-2 rounded-md ${
+                className={`mb-5 p-1.5 rounded-md ${
                   snapshot.isDraggingOver ? 'bg-gray-700/30' : ''
                 }`}
               >
