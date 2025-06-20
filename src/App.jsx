@@ -41,7 +41,7 @@ const App = () => {
         </div>
       )}
 
-      <main className="flex flex-col items-center justify-center flex-grow p-4 sm:p-8 md:p-12 z-10 w-full">
+      <main className="flex flex-col items-center justify-center grow p-4 sm:p-8 md:p-12 z-10 w-full">
         <div className="mb-8 text-center">
           {store.showClock && <Clock />}
           {store.showDate && <DateDisplay />}

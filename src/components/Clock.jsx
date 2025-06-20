@@ -28,7 +28,7 @@ export default function Clock() {
   }, [clockFormat]);
 
   return (
-    <div className="card backdrop-blur-sm bg-base-100/70 shadow-xl">
+    <div className="card backdrop-blur-sm bg-base-100/70 shadow-xl rounded-2xl">
       <div className="card-body items-center text-center">
         <h2 className="card-title text-6xl font-semibold">
           <span>{time.h}</span>:<span>{time.m}</span>

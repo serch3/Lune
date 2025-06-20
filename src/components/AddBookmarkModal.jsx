@@ -17,9 +17,9 @@ export function AddBookmark() {
   const [group, setGroup] = useState('');
   const [color, setColor] = useState('');
 
-  const disableEdit = () => {
-    settingsStore.setEdit(false);
-  };
+  // const disableEdit = () => {
+  //   settingsStore.setEdit(false);
+  // };
 
   const addLink = () => {
     if (store.links.find(l => l.name === name)) {
@@ -65,7 +65,7 @@ export function AddBookmark() {
       <button
         onClick={handleOpenModal}
         aria-label="Add new bookmark"
-        className="btn btn-circle fixed bottom-8 left-8 z-[100] shadow-xl hover:scale-105 active:scale-95"
+        className="btn btn-circle fixed bottom-8 left-8 z-100 shadow-xl hover:scale-105 active:scale-95"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" className="text-white">
             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
@@ -86,7 +86,7 @@ export function AddBookmark() {
             </div>
 
             {/* Body */}
-            <div className="p-5 sm:p-7 space-y-5 overflow-y-auto flex-grow">
+            <div className="p-5 sm:p-7 space-y-5 overflow-y-auto grow">
               <div>
                 <label htmlFor="bookmark-name-add" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Name</label>
                 <input

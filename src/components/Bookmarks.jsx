@@ -123,7 +123,7 @@ const Bookmarks = () => {
                                     </button>
                                     <ul
                                       tabIndex={0}
-                                      className="dropdown-content menu shadow bg-base-100 rounded-box w-40 p-2 z-[1]"
+                                      className="dropdown-content menu shadow bg-base-100 rounded-box w-40 p-2 z-1"
                                     >
                                       <li>
                                         <button
@@ -193,7 +193,7 @@ const Bookmarks = () => {
                                     </button>
                                     <ul
                                       tabIndex={0}
-                                      className="dropdown-content menu shadow bg-base-100 rounded-box w-40 p-2 z-[1]"
+                                      className="dropdown-content menu shadow bg-base-100 rounded-box w-40 p-2 z-1"
                                     >
                                       <li>
                                         <button
