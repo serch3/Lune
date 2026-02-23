@@ -10,25 +10,25 @@ const WeatherWidget = () => {
   const [iconURL, setIconURL] = useState('');
   const [loaded, setLoaded] = useState(false);
 
-  const getWeather = async () => {
-    if (!token || lat === 0 || lon === 0) return;
-
-    try {
-      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${token}&units=metric`;
-      const response = await fetch(url);
-      const data = await response.json();
-
-      setWeatherData(data);
-      if (data && data.weather && data.weather.length > 0) {
-        setIconURL(`http://openweathermap.org/img/w/${data.weather[0].icon}.png`);
-      }
-      setLoaded(true);
-    } catch (err) {
-      console.error('Error fetching weather data:', err);
-    }
-  };
-
   useEffect(() => {
+    const getWeather = async () => {
+      if (!token || lat === 0 || lon === 0) return;
+
+      try {
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${token}&units=metric`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        setWeatherData(data);
+        if (data && data.weather && data.weather.length > 0) {
+          setIconURL(`https://openweathermap.org/img/w/${data.weather[0].icon}.png`);
+        }
+        setLoaded(true);
+      } catch (err) {
+        console.error('Error fetching weather data:', err);
+      }
+    };
+
     getWeather();
     const interval = setInterval(getWeather, 2 * 60 * 60 * 1000); // Update every 2 hours
     return () => clearInterval(interval);

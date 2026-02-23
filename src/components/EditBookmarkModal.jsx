@@ -2,13 +2,12 @@ import { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { useLinksStore } from '@/stores/links';
 import { useAlertStore } from '@/stores/alert';
-import { useSettingsStore } from '@/stores/settings';
 import { GROUPS, COLORS } from '@/constants';
+import { FiX } from 'react-icons/fi';
 
 export function EditBookmarkModal({ bookmark, isOpen, onClose }) {
   const store = useLinksStore();
   const alertStore = useAlertStore();
-  const settingsStore = useSettingsStore();
 
   const [name, setName] = useState('');
   const [url, setUrl] = useState('');
@@ -59,14 +58,12 @@ export function EditBookmarkModal({ bookmark, isOpen, onClose }) {
         <div className="px-5 sm:px-7 py-4 sm:py-5 border-b border-neutral-700/50 flex justify-between items-center">
           <h3 id="edit-bookmark-title" className="font-semibold text-xl text-black dark:text-white">Edit Bookmark</h3>
           <button onClick={onClose} aria-label="Close edit bookmark modal" className="btn btn-sm btn-circle btn-ghost text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <FiX className="h-6 w-6" />
           </button>
         </div>
 
         {/* Body */}
-        <div className="p-5 sm:p-7 space-y-5 overflow-y-auto flex-grow">
+        <div className="p-5 sm:p-7 space-y-5 overflow-y-auto grow">
           <div>
             <label htmlFor={`bookmark-name-edit-${bookmark?.id}`} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Name</label>
             <input

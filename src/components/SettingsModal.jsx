@@ -56,6 +56,8 @@ export default function SettingsModal() {
   const [backgroundImage, setBackgroundImage] = useState(store.backgroundImage);
   const [localBackgroundImage, setLocalBackgroundImage] = useState(store.localBackgroundImage);
   const [imageOpacity, setImageOpacity] = useState(store.imageOpacity);
+  const [blurAmount, setBlurAmount] = useState(store.blurAmount);
+  const [brightnessAmount, setBrightnessAmount] = useState(store.brightnessAmount);
   const [weatherToken, setWeatherToken] = useState(weatherStore.token);
   const [weatherLat, setWeatherLat] = useState(weatherStore.lat);
   const [weatherLon, setWeatherLon] = useState(weatherStore.lon);
@@ -75,6 +77,8 @@ export default function SettingsModal() {
     store.setBackgroundImage(backgroundImage);
     store.setLocalBackgroundImage(localBackgroundImage);
     store.setImageOpacity(imageOpacity);
+    store.setBlurAmount(blurAmount);
+    store.setBrightnessAmount(brightnessAmount);
     weatherStore.setToken(weatherToken);
     weatherStore.setLat(weatherLat);
     weatherStore.setLon(weatherLon);
@@ -96,6 +100,8 @@ export default function SettingsModal() {
     setBackgroundImage(store.backgroundImage);
     setLocalBackgroundImage(store.localBackgroundImage);
     setImageOpacity(store.imageOpacity);
+    setBlurAmount(store.blurAmount);
+    setBrightnessAmount(store.brightnessAmount);
     setWeatherToken(weatherStore.token);
     setWeatherLat(weatherStore.lat);
     setWeatherLon(weatherStore.lon);
@@ -129,7 +135,7 @@ export default function SettingsModal() {
       <button
         onClick={handleOpenModal}
         aria-label="Open settings"
-        className="btn btn-ghost btn-circle fixed bottom-8 right-8 z-[100] shadow-xl backdrop-blur-md hover:scale-105 active:scale-95 p-3 bg-gray-700/60 hover:bg-gray-600/80 border-none"
+        className="btn btn-ghost btn-circle fixed bottom-8 right-8 z-100 shadow-xl backdrop-blur-md hover:scale-105 active:scale-95 p-3 bg-gray-700/60 hover:bg-gray-600/80 border-none"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" className="text-white">
           <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c.04.32.07.65.07.98s-.03.66-.07.98l-2.11 1.65c-.19.15-.24.42.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/>
@@ -150,7 +156,7 @@ export default function SettingsModal() {
             </div>
 
             {/* Body */}
-            <div className="p-5 sm:p-7 space-y-6 overflow-y-auto flex-grow">
+            <div className="p-5 sm:p-7 space-y-6 overflow-y-auto grow">
               <section>
                 <h2 className="text-base font-medium text-gray-300 mb-3 uppercase tracking-wider">Appearance</h2>
 
@@ -238,7 +244,21 @@ export default function SettingsModal() {
                     <span className="label-text text-gray-300 text-sm">Image Opacity</span>
                     <span className="label-text-alt text-gray-200">{imageOpacity}%</span>
                   </label>
-                  <input id="imageOpacity" type="range" min="0" max="100" value={imageOpacity} onChange={e => setImageOpacity(Number(e.target.value))} className="range range-sm range-primary w-100" />
+                  <input id="imageOpacity" type="range" min="0" max="100" value={imageOpacity} onChange={e => setImageOpacity(Number(e.target.value))} className="range range-sm range-primary w-full" />
+                </div>
+                <div className="form-control w-full py-1 mt-2">
+                  <label className="label">
+                    <span className="label-text text-gray-300 text-sm">Background Blur</span>
+                    <span className="label-text-alt text-gray-200">{blurAmount}px</span>
+                  </label>
+                  <input id="blurAmount" type="range" min="0" max="20" value={blurAmount} onChange={e => setBlurAmount(Number(e.target.value))} className="range range-sm range-primary w-full" />
+                </div>
+                <div className="form-control w-full py-1 mt-2">
+                  <label className="label">
+                    <span className="label-text text-gray-300 text-sm">Background Brightness</span>
+                    <span className="label-text-alt text-gray-200">{Math.round(brightnessAmount * 100)}%</span>
+                  </label>
+                  <input id="brightnessAmount" type="range" min="0" max="2" step="0.1" value={brightnessAmount} onChange={e => setBrightnessAmount(Number(e.target.value))} className="range range-sm range-primary w-full" />
                 </div>
               </section>
 

@@ -37,6 +37,8 @@ const SearchBar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const wrapperRef = useRef(null);
 
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+
   // Fetch suggestions
   const fetchSuggestions = useCallback(async (term, controller) => {
     if (!term) {
@@ -60,6 +62,7 @@ const SearchBar = () => {
       }
       setSuggestions(items.slice(0, MAX_SUGGESTIONS));
       setShowDropdown(items.length > 0);
+      setSelectedIndex(-1);
     } catch (err) {
       if (err.name !== 'AbortError') console.error(err);
       setSuggestions([]);
@@ -88,13 +91,21 @@ const SearchBar = () => {
   const goToSearch = term => {
     const query = term.trim();
     if (!query) return;
-    const urls = {
-      google: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
-      duckduckgo: `https://duckduckgo.com/?q=${encodeURIComponent(query)}`,
-      bing: `https://www.bing.com/search?q=${encodeURIComponent(query)}`,
-      yandex: `https://yandex.com/search/?text=${encodeURIComponent(query)}`,
-    };
-    window.location.href = urls[searchEngine] || urls.google;
+    const isUrl = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i.test(query);
+    
+    if (isUrl) {
+      const url = query.startsWith('http') ? query : `https://${query}`;
+      window.location.href = url;
+    } else {
+      const urls = {
+        google: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
+        duckduckgo: `https://duckduckgo.com/?q=${encodeURIComponent(query)}`,
+        bing: `https://www.bing.com/search?q=${encodeURIComponent(query)}`,
+        yandex: `https://yandex.com/search/?text=${encodeURIComponent(query)}`,
+      };
+      window.location.href = urls[searchEngine] || urls.google;
+    }
+    
     setSearchTerm('');
     setShowDropdown(false);
   };
@@ -103,7 +114,33 @@ const SearchBar = () => {
   const handleKeyDown = e => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      goToSearch(searchTerm);
+      if (selectedIndex >= 0 && selectedIndex < suggestions.length) {
+        goToSearch(suggestions[selectedIndex]);
+      } else {
+        goToSearch(searchTerm);
+      }
+    } else if (e.key === 'Escape') {
+      setShowDropdown(false);
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedIndex(prev => {
+        const nextIndex = Math.min(prev + 1, suggestions.length - 1);
+        if (nextIndex >= 0) {
+          setSearchTerm(suggestions[nextIndex]);
+        }
+        return nextIndex;
+      });
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedIndex(prev => {
+        const nextIndex = Math.max(prev - 1, -1);
+        if (nextIndex >= 0) {
+          setSearchTerm(suggestions[nextIndex]);
+        } else {
+          setSearchTerm(debouncedTerm); // Revert to original search term
+        }
+        return nextIndex;
+      });
     }
   };
 
@@ -140,8 +177,14 @@ const SearchBar = () => {
             <li
               key={idx}
               role="option"
+              aria-selected={idx === selectedIndex}
               onMouseDown={() => goToSearch(sugg)}
-              className="flex items-center px-4 py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150"
+              onMouseEnter={() => setSelectedIndex(idx)}
+              className={`flex items-center px-4 py-3 cursor-pointer transition-colors duration-150 ${
+                idx === selectedIndex
+                  ? 'bg-gray-100 dark:bg-gray-700'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+              }`}
             >
               <FiSearch className="mr-3 text-gray-500 dark:text-gray-400" />
               <span className="truncate text-gray-900 dark:text-gray-100 text-base">{sugg}</span>
