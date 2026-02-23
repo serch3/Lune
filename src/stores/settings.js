@@ -26,6 +26,7 @@ export const useSettingsStore = create(
       unsplashApiKey: '',
       unsplashCollectionId: '',
       unsplashFrequency: 'daily', // ('daily', 'weekly', 'hourly')
+      iconBackgroundColor: '#000000', // hex color or 'transparent'
 
       // actions
       setImage: (url) => set({ image: url }),
@@ -47,6 +48,7 @@ export const useSettingsStore = create(
       setUnsplashApiKey: (key) => set({ unsplashApiKey: key }),
       setUnsplashCollectionId: (id) => set({ unsplashCollectionId: id }),
       setUnsplashFrequency: (freq) => set({ unsplashFrequency: freq }),
+      setIconBackgroundColor: (color) => set({ iconBackgroundColor: color }),
       clearAllData: () =>
         set({
           image: '',
@@ -61,11 +63,12 @@ export const useSettingsStore = create(
           brightnessAmount: 0.6,
           searchEngine: 'google',
           clockFormat: '24h',
-          showWeather: true,
+          showWeather: false,
           tabTitle: 'New Tab',
           unsplashApiKey: '',
           unsplashCollectionId: '',
           unsplashFrequency: 'daily',
+          iconBackgroundColor: '#000000',
         }),
     }),
     {
@@ -88,6 +91,7 @@ export const useSettingsStore = create(
         unsplashApiKey: state.unsplashApiKey,
         unsplashCollectionId: state.unsplashCollectionId,
         unsplashFrequency: state.unsplashFrequency,
+        iconBackgroundColor: state.iconBackgroundColor,
       }),
     }
   )

@@ -67,6 +67,10 @@ export default function SettingsModal() {
   const [unsplashApiKey, setUnsplashApiKey] = useState(store.unsplashApiKey);
   const [unsplashCollectionId, setUnsplashCollectionId] = useState(store.unsplashCollectionId);
   const [unsplashFrequency, setUnsplashFrequency] = useState(store.unsplashFrequency);
+  const [iconBackgroundColor, setIconBackgroundColor] = useState(() => {
+    const color = store.iconBackgroundColor || '#000000';
+    return color;
+  });
 
   const save = () => {
     store.setUsername(username);
@@ -88,6 +92,7 @@ export default function SettingsModal() {
     store.setUnsplashApiKey(unsplashApiKey);
     store.setUnsplashCollectionId(unsplashCollectionId);
     store.setUnsplashFrequency(unsplashFrequency);
+    store.setIconBackgroundColor(iconBackgroundColor);
     closeModal();
   };
 
@@ -111,6 +116,12 @@ export default function SettingsModal() {
     setUnsplashApiKey(store.unsplashApiKey);
     setUnsplashCollectionId(store.unsplashCollectionId);
     setUnsplashFrequency(store.unsplashFrequency);
+    
+    let color = store.iconBackgroundColor || '#ffffff';
+    if (color === 'white') color = '#ffffff';
+    if (color === 'black') color = '#000000';
+    setIconBackgroundColor(color);
+    
     store.setEdit(false);
     openModal();
   };
@@ -213,7 +224,49 @@ export default function SettingsModal() {
                       if (file) {
                         const reader = new FileReader();
                         reader.onloadend = () => {
-                          setLocalBackgroundImage(reader.result);
+                          // Compress image before saving to avoid QuotaExceededError
+                          const img = new Image();
+                          img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d');
+                            
+                            // Max dimensions
+                            const MAX_WIDTH = 1920;
+                            const MAX_HEIGHT = 1080;
+                            let width = img.width;
+                            let height = img.height;
+
+                            if (width > height) {
+                              if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                              }
+                            } else {
+                              if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                              }
+                            }
+
+                            canvas.width = width;
+                            canvas.height = height;
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            // Compress to JPEG
+                            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                            
+                            try {
+                              // Test if it fits in localStorage before setting state
+                              const testKey = '__test_storage__';
+                              localStorage.setItem(testKey, compressedDataUrl);
+                              localStorage.removeItem(testKey);
+                              setLocalBackgroundImage(compressedDataUrl);
+                            } catch (e) {
+                              alert('Image is too large to save. Please try a smaller image or compress it further.');
+                              console.error('Storage quota exceeded:', e);
+                            }
+                          };
+                          img.src = reader.result;
                         };
                         reader.readAsDataURL(file);
                       }
@@ -259,6 +312,36 @@ export default function SettingsModal() {
                     <span className="label-text-alt text-gray-200">{Math.round(brightnessAmount * 100)}%</span>
                   </label>
                   <input id="brightnessAmount" type="range" min="0" max="2" step="0.1" value={brightnessAmount} onChange={e => setBrightnessAmount(Number(e.target.value))} className="range range-sm range-primary w-full" />
+                </div>
+                <div className="form-control w-full py-3 mt-2">
+                  <legend className="fieldset-legend" htmlFor="iconBackgroundColor">
+                    <span className="label-text text-gray-300 text-sm">Icon Background Color</span>
+                  </legend>
+                  <div className="flex items-center gap-4 mt-2">
+                    <input
+                      type="color"
+                      id="iconBackgroundColor"
+                      value={iconBackgroundColor === 'transparent' ? '#ffffff' : iconBackgroundColor}
+                      onChange={(e) => setIconBackgroundColor(e.target.value)}
+                      disabled={iconBackgroundColor === 'transparent'}
+                      className="w-10 h-10 rounded cursor-pointer border-0 p-0 bg-transparent disabled:opacity-50"
+                    />
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        className="checkbox checkbox-sm"
+                        checked={iconBackgroundColor === 'transparent'}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setIconBackgroundColor('transparent');
+                          } else {
+                            setIconBackgroundColor('#ffffff');
+                          }
+                        }}
+                      />
+                      <span className="text-sm text-gray-300">Transparent</span>
+                    </label>
+                  </div>
                 </div>
               </section>
 

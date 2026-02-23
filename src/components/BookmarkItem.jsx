@@ -1,4 +1,5 @@
 import { FiEdit3, FiMoreHorizontal, FiX } from 'react-icons/fi';
+import { useSettingsStore } from '@/stores/settings';
 
 const getFaviconUrl = (url, size = 32) => {
   try {
@@ -10,6 +11,15 @@ const getFaviconUrl = (url, size = 32) => {
 };
 
 export function BookmarkItem({ link, group, handleEditClick, deleteLink }) {
+  const iconBackgroundColor = useSettingsStore((state) => state.iconBackgroundColor) || '#000000';
+  const getIconBgClass = () => {
+    return 'shadow-sm';
+  };
+
+  const getIconStyle = () => {
+    return { backgroundColor: iconBackgroundColor };
+  };
+
   if (group === 'Favorites') {
     return (
       <div
@@ -22,7 +32,10 @@ export function BookmarkItem({ link, group, handleEditClick, deleteLink }) {
           rel="noopener noreferrer"
           className="flex flex-col items-center text-center w-full h-full justify-start"
         >
-          <div className="mb-1.5 w-9 h-9 rounded-md flex items-center justify-center bg-black bg-opacity-10 backdrop-blur-sm">
+          <div 
+            className={`mb-1.5 w-9 h-9 rounded-md flex items-center justify-center ${getIconBgClass()}`}
+            style={getIconStyle()}
+          >
             <img
               src={getFaviconUrl(link.url)}
               alt={`${link.name} favicon`}
@@ -94,7 +107,10 @@ export function BookmarkItem({ link, group, handleEditClick, deleteLink }) {
         className="card-body items-center text-center p-1 pb-1.5 flex flex-col justify-start h-full relative z-10"
       >
         <div className="mb-1">
-          <div className="w-9 h-9 rounded-full flex items-center justify-center bg-black bg-opacity-30 backdrop-blur">
+          <div 
+            className={`w-9 h-9 rounded-full flex items-center justify-center ${getIconBgClass()}`}
+            style={getIconStyle()}
+          >
             <img
               src={getFaviconUrl(link.url)}
               alt={`${link.name} favicon`}
