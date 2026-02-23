@@ -56,6 +56,8 @@ export default function SettingsModal() {
   const [backgroundImage, setBackgroundImage] = useState(store.backgroundImage);
   const [localBackgroundImage, setLocalBackgroundImage] = useState(store.localBackgroundImage);
   const [imageOpacity, setImageOpacity] = useState(store.imageOpacity);
+  const [blurAmount, setBlurAmount] = useState(store.blurAmount);
+  const [brightnessAmount, setBrightnessAmount] = useState(store.brightnessAmount);
   const [weatherToken, setWeatherToken] = useState(weatherStore.token);
   const [weatherLat, setWeatherLat] = useState(weatherStore.lat);
   const [weatherLon, setWeatherLon] = useState(weatherStore.lon);
@@ -75,6 +77,8 @@ export default function SettingsModal() {
     store.setBackgroundImage(backgroundImage);
     store.setLocalBackgroundImage(localBackgroundImage);
     store.setImageOpacity(imageOpacity);
+    store.setBlurAmount(blurAmount);
+    store.setBrightnessAmount(brightnessAmount);
     weatherStore.setToken(weatherToken);
     weatherStore.setLat(weatherLat);
     weatherStore.setLon(weatherLon);
@@ -96,6 +100,8 @@ export default function SettingsModal() {
     setBackgroundImage(store.backgroundImage);
     setLocalBackgroundImage(store.localBackgroundImage);
     setImageOpacity(store.imageOpacity);
+    setBlurAmount(store.blurAmount);
+    setBrightnessAmount(store.brightnessAmount);
     setWeatherToken(weatherStore.token);
     setWeatherLat(weatherStore.lat);
     setWeatherLon(weatherStore.lon);
@@ -238,7 +244,21 @@ export default function SettingsModal() {
                     <span className="label-text text-gray-300 text-sm">Image Opacity</span>
                     <span className="label-text-alt text-gray-200">{imageOpacity}%</span>
                   </label>
-                  <input id="imageOpacity" type="range" min="0" max="100" value={imageOpacity} onChange={e => setImageOpacity(Number(e.target.value))} className="range range-sm range-primary w-100" />
+                  <input id="imageOpacity" type="range" min="0" max="100" value={imageOpacity} onChange={e => setImageOpacity(Number(e.target.value))} className="range range-sm range-primary w-full" />
+                </div>
+                <div className="form-control w-full py-1 mt-2">
+                  <label className="label">
+                    <span className="label-text text-gray-300 text-sm">Background Blur</span>
+                    <span className="label-text-alt text-gray-200">{blurAmount}px</span>
+                  </label>
+                  <input id="blurAmount" type="range" min="0" max="20" value={blurAmount} onChange={e => setBlurAmount(Number(e.target.value))} className="range range-sm range-primary w-full" />
+                </div>
+                <div className="form-control w-full py-1 mt-2">
+                  <label className="label">
+                    <span className="label-text text-gray-300 text-sm">Background Brightness</span>
+                    <span className="label-text-alt text-gray-200">{Math.round(brightnessAmount * 100)}%</span>
+                  </label>
+                  <input id="brightnessAmount" type="range" min="0" max="2" step="0.1" value={brightnessAmount} onChange={e => setBrightnessAmount(Number(e.target.value))} className="range range-sm range-primary w-full" />
                 </div>
               </section>
 

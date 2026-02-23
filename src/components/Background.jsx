@@ -19,6 +19,8 @@ export default function BackgroundImageDisplay() {
     unsplashCollectionId,
     unsplashFrequency,
     imageOpacity,
+    blurAmount,
+    brightnessAmount,
   } = useSettingsStore()
 
   const [imageUrl, setImageUrl] = useState('')
@@ -98,7 +100,7 @@ export default function BackgroundImageDisplay() {
       className="fixed inset-0 w-full h-full -z-10 bg-cover bg-center transition-all duration-1000 ease-in-out"
       style={{
         backgroundImage: `url(${imageUrl})`,
-        filter: 'blur(3px) brightness(0.6)',
+        filter: `blur(${blurAmount}px) brightness(${brightnessAmount})`,
         transform: 'scale(1.05)',
         opacity: imageOpacity / 100,
       }}
