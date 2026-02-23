@@ -9,6 +9,7 @@ import { useLinksStore } from './stores/links';
 import SettingsModal from './components/SettingsModal';
 import Bookmarks from './components/Bookmarks';
 import WeatherWidget from './components/WeatherWidget';
+import Alert from './components/Alert';
 import { fetchAndAddTopSites } from './services/topSitesService';
 
 const App = () => {
@@ -31,9 +32,23 @@ const App = () => {
     }
   }, [addMultipleLinks, links, topSitesFetched]);
 
+  // Prevent default drag and drop behavior globally to avoid navigating away
+  useEffect(() => {
+    const handleDragOver = (e) => e.preventDefault();
+    const handleDrop = (e) => e.preventDefault();
+
+    window.addEventListener('dragover', handleDragOver);
+    window.addEventListener('drop', handleDrop);
+
+    return () => {
+      window.removeEventListener('dragover', handleDragOver);
+      window.removeEventListener('drop', handleDrop);
+    };
+  }, []);
+
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen text-white antialiased overflow-hidden">
-      
+      <Alert />
       <BackgroundImage />
       {store.showWeather && (
         <div className="absolute top-4 right-4 z-20">
