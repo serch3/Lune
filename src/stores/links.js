@@ -18,6 +18,32 @@ const createLink = (partial) => ({
   color: partial.color,
 });
 
+const normalizeUrl = (url) => {
+  try {
+    const normalized = new URL(url);
+    normalized.hash = '';
+    normalized.search = '';
+    normalized.hostname = normalized.hostname.toLowerCase();
+    normalized.pathname = normalized.pathname.replace(/\/+$/, '') || '/';
+    return normalized.toString();
+  } catch {
+    return (url || '').trim().toLowerCase().replace(/\/+$/, '');
+  }
+};
+
+const isDuplicateLink = (links, candidate, ignoreId) => {
+  const candidateUrl = normalizeUrl(candidate.url);
+  const candidateName = candidate.name.trim().toLowerCase();
+
+  return links.some((link) => {
+    if (ignoreId && link.id === ignoreId) return false;
+    return (
+      normalizeUrl(link.url) === candidateUrl ||
+      link.name.trim().toLowerCase() === candidateName
+    );
+  });
+};
+
 const defaultLinks = [
   createLink({
     name: 'Nuxt',
@@ -94,15 +120,34 @@ export const useLinksStore = create(
       links: defaultLinks.slice(),
 
       addLink: (linkData) =>
-        set((state) => ({
-          links: [...state.links, createLink(linkData)],
-          linkChanged: state.linkChanged + 1,
-        })),
+        set((state) => {
+          const candidate = {
+            name: linkData.name || '',
+            url: linkData.url || '',
+          };
+
+          if (isDuplicateLink(state.links, candidate)) {
+            return {};
+          }
+
+          return {
+            links: [...state.links, createLink(linkData)],
+            linkChanged: state.linkChanged + 1,
+          };
+        }),
 
       addMultipleLinks: (newLinks) =>
         set((state) => {
-          const existingUrls = new Set(state.links.map((l) => l.url));
-          const filtered = newLinks.filter((l) => !existingUrls.has(l.url));
+          const existingLinks = [...state.links];
+          const filtered = [];
+
+          for (const link of newLinks) {
+            if (!link?.name || !link?.url) continue;
+            if (isDuplicateLink(existingLinks, link)) continue;
+            filtered.push(link);
+            existingLinks.push(link);
+          }
+
           if (filtered.length === 0) {
             return {};
           }
@@ -123,6 +168,16 @@ export const useLinksStore = create(
         set((state) => {
           const idx = state.links.findIndex((l) => l.id === id);
           if (idx === -1) return {};
+
+          const candidate = {
+            name: newLinkData.name ?? state.links[idx].name,
+            url: newLinkData.url ?? state.links[idx].url,
+          };
+
+          if (isDuplicateLink(state.links, candidate, id)) {
+            return {};
+          }
+
           const updatedLinks = [...state.links];
           updatedLinks[idx] = { ...updatedLinks[idx], ...newLinkData };
           return {
@@ -172,16 +227,28 @@ export const useLinksStore = create(
           if (!parsed.data || !Array.isArray(parsed.data)) {
             throw new Error('Invalid format: “data” array missing.');
           }
+          const imported = [];
+          const seen = [...get().links];
+
           for (const item of parsed.data) {
             if (!item.id || !item.url || !item.name || !item.group) {
               throw new Error('Every link must have id, name, url, and group.');
             }
+
+            if (isDuplicateLink(seen, item)) {
+              continue;
+            }
+
+            seen.push(item);
+            imported.push(item);
           }
-          set({
-            links: parsed.data,
-            linkChanged: get().linkChanged + 1,
-          });
-          return { success: true };
+          if (imported.length > 0) {
+            set((state) => ({
+              links: [...state.links, ...imported],
+              linkChanged: state.linkChanged + 1,
+            }));
+          }
+          return { success: true, importedCount: imported.length };
         } catch (err) {
           return { success: false, message: err.message };
         }
