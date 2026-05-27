@@ -5,6 +5,19 @@ import { useAlertStore } from '@/stores/alert';
 import { GROUPS, COLORS } from '@/constants';
 import { FiX } from 'react-icons/fi';
 
+const normalizeUrl = (url) => {
+  try {
+    const normalized = new URL(url);
+    normalized.hash = '';
+    normalized.search = '';
+    normalized.hostname = normalized.hostname.toLowerCase();
+    normalized.pathname = normalized.pathname.replace(/\/+$/, '') || '/';
+    return normalized.toString();
+  } catch {
+    return (url || '').trim().toLowerCase().replace(/\/+$/, '');
+  }
+};
+
 export function EditBookmarkModal({ bookmark, isOpen, onClose }) {
   const store = useLinksStore();
   const alertStore = useAlertStore();
@@ -26,20 +39,36 @@ export function EditBookmarkModal({ bookmark, isOpen, onClose }) {
   const updateLink = () => {
     if (!bookmark) return;
 
-    // Validate URL format
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      alertStore.setAlert('URL must start with http:// or https://', 'error');
-      return;
-    }
-    // Validate Name and URL are not empty
-    if (!name.trim() || !url.trim()) {
+    const trimmedName = name.trim();
+    const trimmedUrl = url.trim();
+
+    if (!trimmedName || !trimmedUrl) {
       alertStore.setAlert('Name and URL cannot be empty', 'error');
       return;
     }
 
+    if (!trimmedUrl.startsWith('http://') && !trimmedUrl.startsWith('https://')) {
+      alertStore.setAlert('URL must start with http:// or https://', 'error');
+      return;
+    }
+
+    const normalizedUrl = normalizeUrl(trimmedUrl);
+    const duplicate = store.links.find((link) => {
+      if (link.id === bookmark.id) return false;
+      return (
+        link.name.trim().toLowerCase() === trimmedName.toLowerCase() ||
+        normalizeUrl(link.url) === normalizedUrl
+      );
+    });
+
+    if (duplicate) {
+      alertStore.setAlert('A bookmark with the same name or URL already exists', 'error');
+      return;
+    }
+
     store.updateLink(bookmark.id, { // Uses bookmark.id now
-      name,
-      url,
+      name: trimmedName,
+      url: trimmedUrl,
       group: group || 'Other',
       color
     });
